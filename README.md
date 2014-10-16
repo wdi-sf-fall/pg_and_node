@@ -152,6 +152,9 @@ db.query = function(statement, params, anotherBuzzer){
 };
 ```
 
+**Excercise:** add UPDATE and DELETE calls (5 min) to `dry.js`
+
+
 ###4 Encapsulate pg api in Objects
 
 Where are the Objects? ... SUPERDRY!
