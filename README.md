@@ -170,7 +170,7 @@ Explore `mydb_lib.js` and `superdry.js`.
 
 Go to [localhost](http://localhost:3000/books)
 
-So what's going on here? Compare to Wednesday's version:
+So what's going on here? Compare to Tuesday's version:
 
 - `app.js` has gotten pretty thin ...
 - books array is gone (used for transient storage)
@@ -184,5 +184,5 @@ Take a look how `/books` route is handled.
 
 Finish the web app and make books truly persistent. Look for TODO comments in `app.js` and `library.js`. These are the only JavaScript files you will need to touch. 
 
-If not done so on Wednesday, add a "show book" page and implement the corresponding route.
+If not done Tuesday, add a "show book" page and implement the corresponding route.
 
