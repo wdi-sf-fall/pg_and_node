@@ -3,30 +3,47 @@
 
 ###Goals for today
 
-- Learn how to use postgres package to talk to databases
-- Practice DRY and OO design
-- Implement first full stack web app!
+- Learn how to talk to databases in JavaScript
+- Apply principles of DRY and Object Oriented design
+- Avoid the pitfalls of asynchronicity 
+- Implement your first **full stack** web app!
 
-#### Resources
+####Before we begin
+
+Todays lesson is organized in branches. Follow along by switching to *topic branches* as we make progress, for example:
+
+	git checkout basic
+
+There's no need to type along. However, feel free to annotate code with comments. Check in changes before switching to the next topic/branch:
+
+	// save my changes, comments, annotations
+	git commit -m'added comments' .
+	// move to next topic
+	git checkout dry 
+
+####Resources
 
 [pg package](https://github.com/brianc/node-postgres) on GitHub.
 
 ####Setup 
 
-Fork, clone [pg_and_node](git@github.com:wdi-sf-fall/pg_and_node.git) repo.
+Fork, clone this repo.
+
+*Branch:* `master`
  
-Setup sample DB used in today's lecture. In examples folder, fire up `psql` and run:
+Setup sample DB used in today's lecture. In root folder, fire up `psql` and run:
 
 	\i setup.sql
 
 Use `psql` commands to check that table and sample data was created.
 	
-
 ###Installing pg
+
+*Branch:* `basic`
 
 No surprise here:
 
-	npm install pg
+	npm install --save pg
 
 
 In order to use pg, require it in js file.
