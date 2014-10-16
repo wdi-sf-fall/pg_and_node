@@ -152,8 +152,8 @@ db.query = function(statement, params, anotherBuzzer){
 };
 ```
 
-**Excercise:** add UPDATE and DELETE calls (5 min) to `dry.js`
-
+**Excercise: UPDATE book "The Taker" and DELETE book by "Grass"
+ (5 min) to `dry.js` **
 
 ###4 Encapsulate pg api in Objects
 

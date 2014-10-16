@@ -33,7 +33,8 @@ db.query("SELECT * FROM books;", function(err, resultSet){
 db.query("INSERT INTO books (title, author) VALUES ($1, $2) RETURNING *",
 ["The Great Gatsby", "Fitzgerald"], function(err, resultSet){
   if (err) console.log("INSERT FAILED :-(", err);
-  console.log(resultSet.rows);
 });
+
+// Excercise: add UPDATE and DELETE calls
 
 pg.end();
