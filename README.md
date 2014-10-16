@@ -5,31 +5,37 @@
 
 - Learn how to talk to databases in JavaScript
 - Apply principles of DRY and Object Oriented design
-- Avoid the pitfalls of asynchronicity 
-- Implement your first **full stack** web app!
+- Avoid the pitfalls of a-synchronicity 
+- Have everything you need to implement your first **full stack** web app!
 
-####Before we begin
+###Before we begin
 
 Todays lesson is organized in branches. Follow along by switching to *topic branches* as we make progress, for example:
 
 	git checkout basic
 
+How to tell which branch I'm in?
+
+	git branch
+	
 There's no need to type along. However, feel free to annotate code with comments. Check in changes before switching to the next topic/branch:
 
 	// save my changes, comments, annotations
-	git commit -m'added comments' .
+	git commit -m'added my comments'
+	// push changes in branch to github
+	git push origin basic   <- branch name!
 	// move to next topic
 	git checkout dry 
 
-####Resources
+###Resources
 
 [pg package](https://github.com/brianc/node-postgres) on GitHub.
 
-####Setup 
+###1 Setup 
 
 Fork, clone this repo.
 
-*Branch:* `master`
+**Branch:** `master`
  
 Setup sample DB used in today's lecture. In root folder, fire up `psql` and run:
 
@@ -37,20 +43,26 @@ Setup sample DB used in today's lecture. In root folder, fire up `psql` and run:
 
 Use `psql` commands to check that table and sample data was created.
 	
-###Installing pg
+###2 Using postgres api
 
-*Branch:* `basic`
+**Branch:** `basic`
 
-No surprise here:
+No surprise here (pg is already a dependency in package.json):
 
-	npm install --save pg
+	npm install
 
+Run `node basic.js` and verify output:
 
-In order to use pg, require it in js file.
+```
+{ id: 1, title: 'The Taker', author: 'Lisa' }
+{ id: 2, title: 'Tin Drum', author: 'Grass' }
+```
+
+Inspect `basic.js`. In order to use pg, require it.
 
 	var pg = require('pg');
 
-###Configure db connection
+####2.1 Configure db connection
 
 ```
 var config = {
@@ -60,7 +72,7 @@ var config = {
 };
 ```
 
-###Connecting to DB
+####2.2 Connecting to db
 
 Generally you will access the postgres server through a pool of `clients`. The `connect` method provides a callback that has a handle to a fresh `client` object. 
 
@@ -71,14 +83,12 @@ Generally you will access the postgres server through a pool of `clients`. The `
 pg.connect(config, function(err, client, done){
 	// We are connected to the DB ...
 	// ... check 'err' to make sure!
-	// 'client' represents the connection
+	// 'client' represents the connection, it runs SQL queries
 	// When done, call 'done()' to release client back to pool.
 }
 ```
 
-### Running queries
-
-Let's explore `basic.js`.
+####2.3 Running queries
 
 ```
 // SELECT SOME DATA
@@ -104,14 +114,18 @@ pg.connect(config, function(err, client, done){
         done();
 });
 ```
+This is pretty much a mess. It's hard to follow what's going on, the callback chain is not very clear. There's a lot of redundancy in the code.
 
-**That's not very DRY!** We can do better than that.
+###3 Don't repeat yourself
 
-```
-git checkout dry
-```
+That's not very DRY! We can do better than that.
 
-Let's explore `dry.js`.
+**Branch:** `dry`
+
+Explore `dry.js`.
+
+Introducing the notion of a **db wrapper** on top of *native* pg
+
 
 ```
 var db = {};
@@ -121,34 +135,54 @@ db.config = {
     host: "localhost"
 };
 
-db.connect = function(runAfterConnecting) {
+db.connect = function(buzzer) {
   pg.connect(db.config, function(err, client, done){
       if (err) {
            console.error("OOOPS!!! SOMETHING WENT WRONG!", err);
       }
-      runAfterConnecting(client);
+      buzzer(client);
       done();
   });
 };
 
-db.query = function(statement, params, callback){
+db.query = function(statement, params, anotherBuzzer){
   db.connect(function(client){
-    client.query(statement, params, callback);
+    client.query(statement, params, anotherBuzzer);
   });
 };
 ```
 
+###4 Encapsulate pg api in Objects
 
-**Where are the Objects? ... SUPERDRY!** 
+Where are the Objects? ... SUPERDRY!
 
-```
-git checkout superdry
-```
+**Branch:** `superdry`
 
-Let's explore `mydb_lib.js` and `superdry.js`.
+Explore `mydb_lib.js` and `superdry.js`.
 
-###Exercise
+###5 Taking our DB Object to the web
 
-Make *books* node app from Wednesday truly persistent. Store and retrieve book data from postgres. Use `mydb_lib.js`.
+**Branch:** `web`
 
+`cd` into `web` directory and run `npm install`. Fire up web server:
+
+	nodemon
+
+Go to [localhost](http://localhost:3000/books)
+
+So what's going on here? Compare to Wednesday's version:
+
+- `app.js` has gotten pretty thin ...
+- books array is gone (used for transient storage)
+- `Book` object is gone, no more idCounter
+- new `Library` package that encapsulates `Book` and `Library` (list of books)
+- `Library` also encapsulates DB, see require `mydb_lib.js`. The fact thet the app is using a database is hidden from the "controller". This is good design. 
+
+Take a look how `/books` route is handled.
+
+###Weekend Lab
+
+Finish the web app and make books truly persistent. Look for TODO comments in `app.js` and `library.js`. These are the only JavaScript files you will need to touch. 
+
+If not done so on Wednesday, add a "show book" page and implement the corresponding route.
 
