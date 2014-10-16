@@ -9,19 +9,19 @@ db.config = {
     host: "localhost"
 };
 
-db.connect = function(runAfterConnecting) {
+db.connect = function(buzzer) {
   pg.connect(db.config, function(err, client, done){
       if (err) {
            console.error("OOOPS!!! SOMETHING WENT WRONG!", err);
       }
-      runAfterConnecting(client);
+      buzzer(client);
       done();
   });
 };
 
-db.query = function(statement, params, callback){
+db.query = function(statement, params, anotherBuzzer){
   db.connect(function(client){
-    client.query(statement, params, callback);
+    client.query(statement, params, anotherBuzzer);
   });
 };
 
