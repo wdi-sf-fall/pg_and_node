@@ -20,9 +20,13 @@ app.get('/', function(req, res){
 //Index
 app.get('/books', function(req, res){
   //DONE!
-  console.log("/BOOKS")
-  var leBooks = library.all();
-  res.render('library/index', {allBooks: leBooks});
+  console.log("/BOOKS");
+  library.all(function(leBooks){//.all passes the buzzer with (leBooks) and the res.render instruction.
+   res.render('library/index', {allBooks: leBooks});
+     // console.log(leBooks);
+
+ });
+  // var leBooks = library.all();
 });
 
 //New
@@ -34,9 +38,15 @@ app.get('/books/new', function(req, res){
 //Create
 app.post('/books', function(req, res) {
 	//TODO
-  console.log("/books -> Implement me.");
+  var newTitle = req.body.book.title;
+  var newAuthor = req.body.book.author;
+  // console.log(newTitle);
+  library.add(newTitle,newAuthor,function(){
+      res.redirect('/books'); 
+
+  });
+  // console.log("/books -> Implement me.");
   // library.add ....
-  res.redirect('/books'); 
 });
 
 //Show
@@ -53,28 +63,41 @@ app.get('/books/:id', function(req, res) {
 //Edit
 app.get('/books/:id/edit', function(req, res) {
 	var id = req.params.id;
-  //TODO
-  console.log("/books/:id/edit -> Implement me.");
-  // library.findById ...
   var foundBook = {};
-  res.render('library/edit', {book: foundBook});
+
+  //TODO
+  // console.log("book id is " + id);
+  library.findById(id, function(foundBook) {
+  // console.log(foundBook);
+  res.render('library/edit', {myBook: foundBook});
+
+  });
+
 });
 
 //Update
 app.put('/books/:id', function(req, res) {
 	var id = req.params.id;
+  var updatedTitle = req.body.book.title;
+  var updatedAuthor = req.body.book.author;
+
   //TODO
-  console.log("/books/:id -> Implement me.");
-  // library.update ...
+  // console.log(id + " : " + updatedAuthor +" : " +updatedTitle);
+  library.update(id,updatedTitle,updatedAuthor,function(){
+
   res.redirect('/books');
+
+  });
 });
 
 //Delete
 app.delete('/books/:id', function(req, res) {
 	var id = req.params.id;
   //TODO
-  // library.destroy ...
-  res.redirect('/books');
+  library.destroy(id,function(){
+      res.redirect('/books');
+
+    });
 });
 
 var server = app.listen(3000, function() {
