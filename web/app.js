@@ -63,7 +63,7 @@ app.get('/books/:id', function(req, res) {
 //Edit
 app.get('/books/:id/edit', function(req, res) {
 	var id = req.params.id;
-  var foundBook = {};
+  // var foundBook = {};
 
   //TODO
   // console.log("book id is " + id);
