@@ -5,12 +5,22 @@
   <title>Title</title>
 <!--   <meta name="description" content="">
   <meta name="author" content=""> -->
-  <link rel="stylesheet" href="">
+  <link rel="stylesheet">
+  <style>
+
+.prompt {
+	color: grey;
+}
+
+  </style>
+
 </head>
 <body>
-  <form action="/books/<%= book.id %>?_method=put" method="post">
-		<input name="book[title]" value="<%= book.title %>">
-		<input name="book[author]" value="<%= book.author %>">
+<h2>You can edit the book: <h4><%= myBook.title %></h4></h2>
+  <form action="/books/<%= myBook.id %>?_method=put" method="post">
+		<input name="book[title]" value="<%= myBook.title %>" class="prompt" autofocus>
+		<input name="book[author]" value="<%= myBook.author %>" class="prompt">
+		<input type="hidden" value="<%= myBook.id %>">
 		<input type="submit" value="Save">
 	</form>
 </body>
