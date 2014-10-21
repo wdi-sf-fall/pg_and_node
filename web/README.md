@@ -1,4 +1,6 @@
-libraryCRUDApp
+Books app with persistance storage support
 ==============
 
-Simple CRUD app that demonstrates PUT &amp; DELETE HTTP verbs via a digital library
+Solution for possible weekend 3 lab. For assignment, see branch 'web' at [pg_and_node repo](https://github.com/wdi-sf-fall/pg_and_node/tree/master/web)
+
+
