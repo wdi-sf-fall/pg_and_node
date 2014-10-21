@@ -20,9 +20,14 @@ app.get('/', function(req, res){
 //Index
 app.get('/books', function(req, res){
   //DONE!
-  console.log("/BOOKS")
-  var leBooks = library.all();
-  res.render('library/index', {allBooks: leBooks});
+  console.log("/BOOKS");
+
+  var buzzer = function(leBooks) {
+      res.render('library/index', {allBooks: leBooks});
+  };
+
+  library.all(buzzer);
+
 });
 
 //New

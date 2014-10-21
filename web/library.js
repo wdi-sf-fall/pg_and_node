@@ -5,22 +5,27 @@ var DB = require('./mydb_lib.js');
 var db = new DB("library_example_app", 5432, "localhost");
 
 function Book(title, author, id) {
-  this.id = 0;
+  this.id = id;
   this.title = title;
   this.author = author;
 }
 
 function Library() {
 }
+
 // TOGETHER!
-Library.prototype.all = function() {
+Library.prototype.all = function(buzzer) {
 	var allBooks = [];
 
-	// retrieve books
-	allBooks.push(new Book('The Great Gatsby', 'Fitzgerald', 1));
-	allBooks.push(new Book('Tin Drum', 'Grass', 1));
-
-	return allBooks;
+ db.query("SELECT * FROM books;", [], function(err, resultSet){
+    if (err) console.log("QUERY FAILED", err);
+    resultSet.rows.forEach(function(row){
+    	var aBook = new Book(row.title, row.author, row.id);
+ 			allBooks.push(aBook);
+    });
+    console.log(allBooks);
+    buzzer(allBooks);
+	});
 };
 
 Library.prototype.add = function(title, author, buzzer) {
